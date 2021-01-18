@@ -16,7 +16,20 @@ export default {
     components: {
       HoneyComb
     },
+    mounted: function() {
+      this.root = document.documentElement;
+      this.$nextTick(function () {
+        // Código que se ejecutará solo después de
+        // haber renderizado la vista completa
+        if(this.people.length <= 6 && this.$vuetify.breakpoint.width >= 1100){
+          this.root.style.setProperty("--Nhexa", "4");
+        }
+      })
+    },
+    // updated: function () {
+    // },
     data: () => ({
+      root: null,
       people: [
         {name: "John Smith", image: "https://source.unsplash.com/random/1"},
         {name: "Stephen Hawkins", image: "https://source.unsplash.com/random/2"},
@@ -44,7 +57,11 @@ export default {
 	--size: calc(calc(90vw / var(--Nhexa)) - var(--gap));
 }
 @media only screen and (min-width: 1100px) {
-  :root {--Nhexa: 4;}
+  :root {--Nhexa: 6;}
+  section {margin: calc(var(--size) * .6) calc(var(--size) * .75) 0;}
+}
+@media only screen and (max-width: 1100px) {
+	:root {--Nhexa: 4;}
   section {margin: calc(var(--size) * .6) calc(var(--size) * .55) 0;}
 }
 @media only screen and (max-width: 600px) {

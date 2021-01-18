@@ -1,27 +1,23 @@
 <template>
     <article>
-			<figure>
-			<h2>{{person.name}}</h2>
-				<p>Estudiante de pregrado </p>
-			</figure>
-			<img alt v-bind:src="person.image" />
-		</article>
+		<figure>
+		<h2>{{person.name}}</h2>
+			<p>Estudiante de pregrado </p>
+		</figure>
+		<img alt v-bind:src="person.image" />
+	</article>
 </template>
 <script>
 export default {
     name: "HoneyComb",
-    props: ["person"]
+    props: ["person"],
 }
 </script>
 <style>
-:root {
-  --Nhexa: 4;
-	--size: calc(calc(90vw / var(--Nhexa)) - var(--gap));
-}
 article {
 	background: #0D47A1;
   width: var(--size); 
-  height: calc(var(--size) / 1.1111111);
+  height: calc(var(--size) / 1.1111);
 	clip-path: url(#hexagono);
   clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
   margin-right: calc(var(--size) / 2);

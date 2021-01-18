@@ -6,7 +6,7 @@
       dark
     >
       <v-app-bar-nav-icon 
-      v-if="$vuetify.breakpoint.xsOnly" 
+      v-if="$vuetify.breakpoint.width <= 950" 
       @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
       <div class="d-flex align-center">
@@ -23,7 +23,7 @@
       </div>
 
       <v-spacer></v-spacer>
-      <div v-if="!$vuetify.breakpoint.xsOnly">
+      <div v-if="$vuetify.breakpoint.width > 950">
         <v-btn
           to="/"
           text

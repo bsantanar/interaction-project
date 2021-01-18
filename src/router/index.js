@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Publications from '../views/Publications.vue'
 import People from '../views/People.vue'
 import Resources from '../views/Resources.vue'
+import Contact from '../views/Contact.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     path: '/resources',
     name: 'Resources',
     component: Resources
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
   }
 ]
 
