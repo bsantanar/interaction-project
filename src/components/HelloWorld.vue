@@ -1,91 +1,165 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
+      <v-hover v-slot="{ hover }">
+            <v-card
+              :elevation="hover ? 12 : 2"
+              :class="{ 'on-hover': hover }"
+            >
+              <v-img
+                src="https://www.openglove.org/assets/images/header-glove.jpg"
+                max-height="400"
+              >
+                <v-expand-transition>
+                  <div
+                    v-if="!hover"
+                    class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
+                    style="height: 100%;"
+                  >
+                    OpenGlove
+                  </div>
+                </v-expand-transition>
+              </v-img>
+            </v-card>
+          </v-hover>
+    </v-row>
+    <v-row class="text-center">
+      <v-col>
+        <v-hover v-slot="{ hover }">
+          <v-card
+            class="mx-auto"
+            color="grey lighten-4"
+            max-width="600"
           >
-            {{ next.text }}
-          </a>
-        </v-row>
+            <v-img
+              :aspect-ratio="16/9"
+              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+            >
+              <v-expand-transition>
+                <div
+                  v-if="hover"
+                  class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
+                  style="height: 100%;"
+                >
+                  Our mission is very important
+                </div>
+              </v-expand-transition>
+            </v-img>
+            <v-card-text
+              class="pt-6"
+              style="position: relative;"
+            >
+              <!-- <div class="font-weight-light grey--text title mb-2">
+                For the perfect meal
+              </div> -->
+              <h3 class="display-1 font-weight-bold primary--text mb-2">
+                Mission
+              </h3>
+            </v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
+      <v-col>
+        <v-hover v-slot="{ hover }">
+          <v-card
+            class="mx-auto"
+            color="grey lighten-4"
+            max-width="600"
           >
-            {{ link.text }}
-          </a>
-        </v-row>
+            <v-img
+              :aspect-ratio="16/9"
+              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+            >
+              <v-expand-transition>
+                <div
+                  v-if="hover"
+                  class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
+                  style="height: 100%;"
+                >
+                  Our objective is very important
+                </div>
+              </v-expand-transition>
+            </v-img>
+            <v-card-text
+              class="pt-6"
+              style="position: relative;"
+            >
+              <!-- <div class="font-weight-light grey--text title mb-2">
+                For the perfect meal
+              </div> -->
+              <h3 class="display-1 font-weight-bold primary--text mb-2">
+                Objective
+              </h3>
+            </v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
+      <v-col>
+        <v-hover v-slot="{ hover }">
+          <v-card
+            class="mx-auto"
+            color="grey lighten-4"
+            max-width="600"
           >
-            {{ eco.text }}
-          </a>
-        </v-row>
+            <v-img
+              :aspect-ratio="16/9"
+              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+            >
+              <v-expand-transition>
+                <div
+                  v-if="hover"
+                  class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
+                  style="height: 100%;"
+                >
+                  Our purpose is very important
+                </div>
+              </v-expand-transition>
+            </v-img>
+            <v-card-text
+              class="pt-6"
+              style="position: relative;"
+            >
+              <!-- <div class="font-weight-light grey--text title mb-2">
+                For the perfect meal
+              </div> -->
+              <h3 class="display-1 font-weight-bold primary--text mb-2">
+                Purpose
+              </h3>
+            </v-card-text>
+          </v-card>
+        </v-hover>
+      </v-col>
+    </v-row>
+    <v-row class="text-center">
+      <v-col
+          cols="12"
+          sm="12"
+          lg="8"
+      >
+        <v-sheet
+          rounded="lg"
+          elevation="1"
+        >
+          <v-carousel hide-delimiters cycle>
+            <v-carousel-item
+              v-for="(item,i) in items"
+              :key="i"
+              :src="item.src"
+            ></v-carousel-item>
+          </v-carousel>
+        </v-sheet>
+      </v-col>
+      <v-col
+          cols="12"
+          sm="12"
+          lg="4"
+      >
+        <v-sheet
+          rounded="lg"
+          elevation="1"
+        >
+          <h1>SOCIAL MEDIA</h1>
+        </v-sheet>
       </v-col>
     </v-row>
   </v-container>
@@ -96,56 +170,38 @@
     name: 'HelloWorld',
 
     data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
+      items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+          },
       ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com',
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify',
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
-        },
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer',
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-        },
-      ],
+      
     }),
   }
 </script>
+<style>
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+}
+.v-card {
+  transition: opacity .4s ease-in-out;
+}
+
+.v-card:not(.on-hover) .v-img {
+  opacity: 0.6;
+ }
+</style>

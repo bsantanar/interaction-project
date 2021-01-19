@@ -28,6 +28,7 @@
                                     :counter="10"
                                     label="Name"
                                     required
+                                    outlined
                                     @input="$v.name.$touch()"
                                     @blur="$v.name.$touch()"
                                 ></v-text-field>
@@ -42,6 +43,7 @@
                                     :error-messages="emailErrors"
                                     label="Email"
                                     required
+                                    outlined
                                     @input="$v.email.$touch()"
                                     @blur="$v.email.$touch()"
                                 ></v-text-field>
@@ -55,6 +57,7 @@
                                     :counter="15"
                                     label="Subject"
                                     required
+                                    outlined
                                     @input="$v.subject.$touch()"
                                     @blur="$v.subject.$touch()"
                                 ></v-text-field>
@@ -68,6 +71,7 @@
                                     :counter="100"
                                     label="Commentary"
                                     required
+                                    outlined
                                     @input="$v.commentary.$touch()"
                                     @blur="$v.commentary.$touch()"
                                 ></v-textarea>
