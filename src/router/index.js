@@ -5,6 +5,7 @@ import Publications from '../views/Publications.vue'
 import People from '../views/People.vue'
 import Resources from '../views/Resources.vue'
 import Contact from '../views/Contact.vue'
+import Activities from '../views/Activities.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/contact',
     name: 'Contact',
     component: Contact
+  },
+  {
+    path: '/activities',
+    name: 'Activities',
+    component: Activities
   }
 ]
 

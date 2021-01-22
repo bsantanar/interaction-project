@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container style="max-width: 1200px;">
     <v-row class="text-center">
       <v-hover v-slot="{ hover }">
             <v-card
@@ -22,6 +22,37 @@
               </v-img>
             </v-card>
           </v-hover>
+    </v-row>
+    <v-row>
+      <v-col
+          cols="12"
+          sm="8"
+          lg="8"
+      >
+        <div class="headline text-h4 font-weight-bold black--text mb-1 text-center">
+          Haptic device that provides vibrotactile feedback
+        </div>
+        <div class="subtitle-1 text-subtitle-1 black--text text-center">
+          OpenGlove offers a flexible design, which allows developers and users to rearrange 
+          the placement of vibration motors in different areas of the hand depending on their 
+          particular needs. OpenGlove is a useful resource to enhance immersion in virtual reality 
+          and natural interfaces applications. In this site we provide the design and construction 
+          guidelines of the hardware. We also provide the basic software tools in order to help you 
+          in the construction of your own implementations of OpenGlove and software that uses this device.
+        </div>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="4"
+        lg="4"
+      >
+
+        <v-img
+          src="https://www.openglove.org/assets/images/about-glove.jpg"
+          aspect-ratio="1.7"
+          contain
+        ></v-img>
+      </v-col>
     </v-row>
     <v-row class="text-center">
       <v-col>

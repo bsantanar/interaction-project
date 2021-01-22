@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container style="max-width: 1200px;">
         <h1>
             Contact Us
         </h1>
