@@ -8,7 +8,7 @@
     ></v-img>
 
     <v-card-title>
-      {{card.headline}}
+      {{card.title}}
     </v-card-title>
 
     <v-card-subtitle>
@@ -39,7 +39,7 @@
         <v-divider></v-divider>
 
         <v-card-text>
-          {{card.text}}
+          {{card.description}}
         </v-card-text>
       </div>
     </v-expand-transition>

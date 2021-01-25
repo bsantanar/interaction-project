@@ -1,10 +1,11 @@
 <template>
     <article>
 		<figure>
-		<h2>{{person.name}}</h2>
-			<p>Estudiante de pregrado </p>
+		<h2>{{person.fullName}}</h2>
+			<p>{{person.degree}}</p>
 		</figure>
-		<img alt v-bind:src="person.image" />
+		<!-- <img alt v-bind:src="person.image" /> -->
+		<img alt src="https://picsum.photos/200" />
 	</article>
 </template>
 <script>

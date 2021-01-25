@@ -7,9 +7,9 @@
     <v-card-subtitle class="pb-0">
         {{card.year}}
     </v-card-subtitle>
-    <v-card-title>{{card.headline}}</v-card-title>
+    <v-card-title>{{card.title}}</v-card-title>
     <v-card-text class="text--primary">
-        <div>{{card.subtitle}}</div>
+        <div>{{card.description}}</div>
     </v-card-text>
 
     <v-card-actions>

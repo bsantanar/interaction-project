@@ -3,61 +3,82 @@
         <h1>
             Activities
         </h1>
-        <v-row>
-            <v-col
-                cols="12"
-                sm="12"
-                lg="2"
-            >
-                <v-sheet
-                    rounded="lg"
-                    elevation="1"
-                >
-                    <v-list color="transparent"
+        <div class="text-center" v-if="errored">
+            <h3>We're sorry, we're not able to retrieve this information at the moment, please try back later</h3>
+        </div>
+        <div v-else>
+            <div>
+                <v-row>
+                    <v-col
+                        cols="12"
+                        sm="12"
+                        lg="2"
                     >
-                        <v-subheader>Filter by year</v-subheader>
-                        <v-list-item-group
-                            v-model="selectedItem"
-                            color="primary"
-                            class="text-center"
+                        <div v-if="loading">
+                            <v-skeleton-loader
+                                class="mx-auto"
+                                max-width="300"
+                                type="list-item"
+                            ></v-skeleton-loader>
+                        </div>
+                        <v-sheet v-else
+                            rounded="lg"
+                            elevation="1"
+                        >
+                            <v-list color="transparent"
                             >
-                            <v-list-item
-                                v-for="(item, i) in items"
-                                :key="i"
-                            >
-                                <!-- <v-list-item-icon>
-                                <v-icon v-text="item.icon"></v-icon>
-                                </v-list-item-icon> -->
+                                <v-subheader>Filter by year</v-subheader>
+                                <v-list-item-group
+                                    v-model="selectedItem"
+                                    color="primary"
+                                    class="text-center"
+                                    >
+                                    <v-list-item
+                                        v-for="(item, i) in items"
+                                        :key="i"
+                                    >
+                                        <!-- <v-list-item-icon>
+                                        <v-icon v-text="item.icon"></v-icon>
+                                        </v-list-item-icon> -->
 
-                                <v-list-item-content>
-                                <v-list-item-title v-text="item"></v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list-item-group>
-                    </v-list>
-                </v-sheet>
-            </v-col>
-            <v-col
-                cols="12"
-                lg="10"
-                sm="12"
-            >
-                    <div
+                                        <v-list-item-content>
+                                        <v-list-item-title v-text="item"></v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-list>
+                        </v-sheet>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        lg="10"
+                        sm="12"
                     >
-                        <Activity
-                        v-for="card in filterPublications"
-                        :key="card.headline"
-                        :card="card"
-                        />
-                    </div>
-            </v-col>
-        </v-row>
+                        <div v-if="loading">
+                            <v-skeleton-loader
+                                class="mx-auto"
+                                type="card"
+                            ></v-skeleton-loader>
+                        </div>
+                            <div v-else
+                            >
+                                <Activity
+                                v-for="card in filterPublications"
+                                :key="card.headline"
+                                :card="card"
+                                />
+                            </div>
+                    </v-col>
+                </v-row>
+            </div>
+        </div>
     </v-container>
 </template>
 
 <script>
 import Activity from '@/components/Activity.vue'
-import moment from 'moment';
+import axios from 'axios'
+// import moment from 'moment';
 
 export default {
     name: "Activities",
@@ -70,19 +91,23 @@ export default {
           2017,
           2018
       ],
-      cards: [
-        {
-            headline: 'OpenGlove SDK for Android Devices', 
-            text: 'Lorem ipsum dolor sit amet consectetur adipiscing elit ultrices hendrerit, sociosqu mauris suspendisse facilisi donec blandit nisl lobortis pretium, risus cursus convallis est fermentum natoque magna phasellus. Facilisi varius metus lectus sodales pretium morbi ornare volutpat sollicitudin, imperdiet magna class est aptent mi semper faucibus pharetra, dignissim nunc mus tempus vitae congue quisque cras. Torquent erat laoreet fermentum mattis est risus fringilla volutpat eget cubilia donec ligula nec lobortis, hendrerit fames dis ultrices sagittis nostra integer phasellus luctus cum malesuada facilisis tempus.', 
-            date: moment().format("DD-MM-YYYY")
-        },
-        {
-            headline: 'OpenGlove Extensions to Capture Hand Movements Through 9-axis IMU and Flex Sensors', 
-            text: 'Undergraduate Thesis. Supervised by González-Ibáñez, R. Departamento de Ingenieria Informatica, Universidad de Santiago de Chile.', 
-            date: moment(new Date(2017,11,20)).format("DD-MM-YYYY")
-        },
-      ]
+      loading: true,
+      errored: false,
+      cards: []
     }),
+    mounted() {
+        setTimeout(() => {
+            axios
+                .get('http://localhost:3000/api/activity/?projectId=600c3c79245fa93878cf4955')
+                .then(res => this.cards = res.data.data)
+                .catch(err => {
+                    console.error("axios err", err)
+                    this.errored = true
+                })
+                .finally(() => this.loading = false)
+
+        }, 2000)
+    },
     computed: {
         filterPublications: function(){
             if(!this.items[this.selectedItem]) return this.cards

@@ -1,47 +1,60 @@
 <template>
-  <section>
-    <HoneyComb 
-      v-for="person in people"
-      :key="person.name"
-      :person="person"
-    />
-  </section>
+  <div>
+    <div class="text-center" v-if="errored">
+        <h3>We're sorry, we're not able to retrieve this information at the moment, please try back later</h3>
+    </div>
+    <div v-else>
+      <div 
+        v-if="loading"
+        class="text-center mt-5"
+      >
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+      <section v-else>
+        <HoneyComb 
+          v-for="person in people"
+          :key="person.name"
+          :person="person"
+        />
+      </section>
+    </div>
+  </div>
   
 </template>
 <script>
 import HoneyComb from "../components/HoneyComb.vue";
+import axios from 'axios'
 
 export default {
     name: "People",
     components: {
       HoneyComb
     },
-    mounted: function() {
-      this.root = document.documentElement;
-      this.$nextTick(function () {
-        // Código que se ejecutará solo después de
-        // haber renderizado la vista completa
-        if(this.people.length <= 6 && this.$vuetify.breakpoint.width >= 1100){
-          this.root.style.setProperty("--Nhexa", "4");
-        }
-      })
-    },
     // updated: function () {
     // },
+    mounted() {
+        setTimeout(() => {
+            axios
+                .get('http://localhost:3000/api/member/?projectId=600c3c79245fa93878cf4955')
+                .then(res => this.people = res.data.data)
+                .catch(err => {
+                    console.error("axios err", err)
+                    this.errored = true
+                })
+                .finally(() => this.loading = false)
+
+        }, 2000)
+    },
     data: () => ({
       root: null,
-      people: [
-        {name: "John Smith", image: "https://source.unsplash.com/random/1"},
-        {name: "Stephen Hawkins", image: "https://source.unsplash.com/random/2"},
-        {name: "Stephen Hawk1ns", image: "https://source.unsplash.com/random/2"},
-        {name: "Stephen Hawk2ns", image: "https://source.unsplash.com/random/2"},
-        {name: "Stephen Hawk4ns", image: "https://source.unsplash.com/random/2"},
-        {name: "Stephen Hawk9ns", image: "https://source.unsplash.com/random/5"},
-        {name: "Stephen Hawk5ns", image: "https://source.unsplash.com/random/4"},
-        {name: "Stephen Hawk6ns", image: "https://source.unsplash.com/random/3"},
-        {name: "Stephen Hawk7ns", image: "https://source.unsplash.com/random/2"},
-        {name: "Stephen Hawk3ns", image: "https://source.unsplash.com/random/2"}
-      ]
+      loading: true,
+      errored: false,
+      people: []
     }),
 
 }
