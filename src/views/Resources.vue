@@ -3,45 +3,89 @@
         <h1>
             Resources
         </h1>
-        <v-row>
-                <Resource 
-                    v-for="resource in resources"
-                    :key="resource.title"
-                    :resource="resource"
-                />
-        </v-row>
+        <div class="text-center" v-if="errored">
+            <h3>We're sorry, we're not able to retrieve this information at the moment, please try back later</h3>
+        </div>
+        <div v-else>
+            <div v-if="loading">
+                <v-row>
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        lg="4"
+                    >
+                        <v-skeleton-loader
+                            class="mx-auto"
+                            type="list-item-three-line"
+                        ></v-skeleton-loader>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        lg="4"
+                    >
+                        <v-skeleton-loader
+                            class="mx-auto"
+                            type="list-item-three-line"
+                        ></v-skeleton-loader>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        lg="4"
+                    >
+                        <v-skeleton-loader
+                            class="mx-auto"
+                            type="list-item-three-line"
+                        ></v-skeleton-loader>
+                    </v-col>
+                </v-row>
+            </div>
+            <div v-else>
+                <v-row>
+                    <Resource 
+                        v-for="resource in resources"
+                        :key="resource.title"
+                        :resource="resource"
+                    />
+                </v-row>
+            </div>
+        </div>
     </v-container>
 </template>
 <script>
 import Resource from '../components/Resource.vue'
+import axios from 'axios'
 export default {
     name: 'Resources',
     components: {
         Resource
     },
+    mounted() {
+        setTimeout(() => {
+            axios
+                .get(`${process.env.VUE_APP_API_URL}/resource/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
+                .then(res => {
+                    this.resources = res.data.data
+                    this.resources = this.resources.map( r => {
+                        return {
+                            ...r,
+                            image: 'data:image/jpeg;base64,' + Buffer.from(r.image)
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.error("axios err", err)
+                    this.errored = true
+                })
+                .finally(() => this.loading = false)
+
+        }, 2000)
+    },
     data: () => ({
-      resources: [
-        {
-            title: 'Software Arduino', 
-            description: 'Download Arduino Controller Software', 
-            src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"
-        },
-        {
-            title: 'API C#', 
-            description: 'Download API for C#', 
-            src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"
-        },
-        {
-            title: 'API Javascript', 
-            description: 'Download API for Javascript', 
-            src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"
-        },
-        {
-            title: '3D Models', 
-            description: 'Download 3D models', 
-            src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg"
-        },
-      ]
+      resources: [],
+      loading: true,
+      errored: false
     }),
 }
 </script>

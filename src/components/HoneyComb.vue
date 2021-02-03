@@ -5,7 +5,7 @@
 			<p>{{person.degree}}</p>
 		</figure>
 		<!-- <img alt v-bind:src="person.image" /> -->
-		<img alt src="https://picsum.photos/200" />
+		<img alt :src="person.image" />
 	</article>
 </template>
 <script>

@@ -3,7 +3,7 @@
     class="mx-auto mb-2"
   >
     <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+      :src="card.image"
       height="200px"
     ></v-img>
 
@@ -12,13 +12,13 @@
     </v-card-title>
 
     <v-card-subtitle>
-      {{card.date}}
+      {{formatDate(card.date)}}
     </v-card-subtitle>
 
     <v-card-actions>
       <v-btn
         @click="show = !show"
-        color="blue darken-2"
+        color="primary darken-2"
         text
       >
         Learn More
@@ -52,5 +52,20 @@ export default {
     data: () => ({
         show: false,
     }),
+    methods: {
+        formatDate(date){
+          var d = new Date(date),
+              month = '' + (d.getMonth() + 1),
+              day = '' + d.getDate(),
+              year = d.getFullYear();
+
+          if (month.length < 2) 
+              month = '0' + month;
+          if (day.length < 2) 
+              day = '0' + day;
+
+          return [year, month, day].join('-');
+      }
+    }
 }
 </script>

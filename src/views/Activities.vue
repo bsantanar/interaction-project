@@ -34,7 +34,7 @@
                                     class="text-center"
                                     >
                                     <v-list-item
-                                        v-for="(item, i) in items"
+                                        v-for="(item, i) in years"
                                         :key="i"
                                     >
                                         <!-- <v-list-item-icon>
@@ -87,10 +87,7 @@ export default {
     },
     data: () => ({
       selectedItem: null,
-      items: [
-          2017,
-          2018
-      ],
+      years: [],
       loading: true,
       errored: false,
       cards: []
@@ -98,8 +95,18 @@ export default {
     mounted() {
         setTimeout(() => {
             axios
-                .get('http://localhost:3000/api/activity/?projectId=600c3c79245fa93878cf4955')
-                .then(res => this.cards = res.data.data)
+                .get(`${process.env.VUE_APP_API_URL}/activity/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
+                .then(res => {
+                    this.cards = res.data.data
+                    this.years = this.cards.map( c => new Date(c.date).getFullYear() )
+                                    .filter((value, index, self) => self.indexOf(value) === index)
+                    this.cards = this.cards.map( r => {
+                        return {
+                            ...r,
+                            image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
+                        }
+                    });
+                })
                 .catch(err => {
                     console.error("axios err", err)
                     this.errored = true
@@ -110,8 +117,8 @@ export default {
     },
     computed: {
         filterPublications: function(){
-            if(!this.items[this.selectedItem]) return this.cards
-            return this.cards.filter(c => c.year == this.items[this.selectedItem])
+            if(!this.years[this.selectedItem]) return this.cards
+            return this.cards.filter(c => new Date(c.date).getFullYear() == this.years[this.selectedItem])
         }
     }
 }

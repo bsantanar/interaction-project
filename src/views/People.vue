@@ -40,8 +40,16 @@ export default {
     mounted() {
         setTimeout(() => {
             axios
-                .get('http://localhost:3000/api/member/?projectId=600c3c79245fa93878cf4955')
-                .then(res => this.people = res.data.data)
+                .get(`${process.env.VUE_APP_API_URL}/member/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
+                .then(res => {
+                  this.people = res.data.data
+                  this.people = this.people.map( r => {
+                        return {
+                            ...r,
+                            image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
+                        }
+                    });
+                })
                 .catch(err => {
                     console.error("axios err", err)
                     this.errored = true

@@ -165,7 +165,7 @@
       <v-col
           cols="12"
           sm="12"
-          lg="8"
+          lg="12"
       >
         <v-sheet
           rounded="lg"
@@ -180,7 +180,7 @@
           </v-carousel>
         </v-sheet>
       </v-col>
-      <v-col
+      <!-- <v-col
           cols="12"
           sm="12"
           lg="4"
@@ -191,7 +191,7 @@
         >
           <h1>SOCIAL MEDIA</h1>
         </v-sheet>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
