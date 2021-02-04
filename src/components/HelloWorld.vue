@@ -7,7 +7,7 @@
               :class="{ 'on-hover': hover }"
             >
               <v-img
-                src="https://www.openglove.org/assets/images/header-glove.jpg"
+                src="@/assets/header-glove.jpg"
                 max-height="400"
               >
                 <v-expand-transition>
@@ -48,7 +48,7 @@
       >
 
         <v-img
-          src="https://www.openglove.org/assets/images/about-glove.jpg"
+          src="@/assets/about-glove.jpg"
           aspect-ratio="1.7"
           contain
         ></v-img>
@@ -64,7 +64,7 @@
           >
             <v-img
               :aspect-ratio="16/9"
-              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+              src="@/assets/mission.png"
             >
               <v-expand-transition>
                 <div
@@ -99,7 +99,7 @@
           >
             <v-img
               :aspect-ratio="16/9"
-              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+              src="@/assets/objective.jpg"
             >
               <v-expand-transition>
                 <div
@@ -134,7 +134,7 @@
           >
             <v-img
               :aspect-ratio="16/9"
-              src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+              src="@/assets/purpose.png"
             >
               <v-expand-transition>
                 <div
@@ -203,16 +203,13 @@
     data: () => ({
       items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            src: require('../assets/guante-5.jpg'),
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+            src: require('../assets/guante-7.jpg'),
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+            src: require('../assets/guante-8.jpg'),
           },
       ],
       
