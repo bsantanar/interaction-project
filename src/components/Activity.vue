@@ -37,7 +37,7 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
-        <div class="text-center">
+        <div v-if="card.link" class="text-center">
 
           <iframe width="80%" height="350px" :src="card.link" frameborder="0" allowtransparency="true" allowfullscreen allow="encrypted-media"></iframe>
 
