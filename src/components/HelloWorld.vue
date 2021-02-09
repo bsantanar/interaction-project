@@ -16,7 +16,7 @@
                     class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                     style="height: 100%;"
                   >
-                    {{language.title}}
+                    {{getText('title')}}
                   </div>
                 </v-expand-transition>
               </v-img>
@@ -30,10 +30,10 @@
           lg="8"
       >
         <div class="headline text-h4 font-weight-bold black--text mb-1 text-center">
-          {{language.subtitle}}
+          {{getText('subtitle')}}
         </div>
         <div class="subtitle-1 text-subtitle-1 black--text text-center">
-          {{language.description}}  
+          {{getText('description')}}  
         </div>
       </v-col>
       <v-col
@@ -67,7 +67,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  {{language.missionDescription}}
+                  {{getText('missionDescription')}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -79,7 +79,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                {{language.mission}}
+                {{getText('mission')}}
               </h3>
             </v-card-text>
           </v-card>
@@ -102,7 +102,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  {{language.objectiveDescription}}
+                  {{getText('objectiveDescription')}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -114,7 +114,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                {{language.objective}}
+                {{getText('objective')}}
               </h3>
             </v-card-text>
           </v-card>
@@ -137,7 +137,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  {{language.purposeDescription}}
+                  {{getText('purposeDescription')}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -149,7 +149,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                {{language.purpose}}
+                {{getText('purpose')}}
               </h3>
             </v-card-text>
           </v-card>
@@ -195,17 +195,18 @@
 import info from "../assets/info.json";
 export default {
   name: 'HelloWorld',
-
   data: () => ({
-    language: {},
     items: []
   }),
   mounted() {
     this.items = info.carousel.map(a => {
       return {src: require(`../assets/${a}`)}
     })
-    console.log(this.items)
-    this.language = this.$parent.$parent.$parent.$parent.language;
+  },
+  methods: {
+    getText: function(key) {
+      return this.$parent.$parent.$parent.$parent.language[key];
+    }
   }
 }
 </script>
