@@ -21,7 +21,7 @@
         color="primary darken-2"
         text
       >
-        Learn More
+        {{this.$parent.$parent.$parent.$parent.language.learn}}
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -37,7 +37,11 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
+        <div class="text-center">
 
+          <iframe width="80%" height="350px" :src="card.link" frameborder="0" allowtransparency="true" allowfullscreen allow="encrypted-media"></iframe>
+
+        </div>
         <v-card-text>
           {{card.description}}
         </v-card-text>
@@ -50,7 +54,7 @@ export default {
     name: 'Activity',
     props: ['card'],
     data: () => ({
-        show: false,
+      show: false,
     }),
     methods: {
         formatDate(date){

@@ -1,10 +1,10 @@
 <template>
     <v-container style="max-width: 1200px;">
         <h1>
-            Publications
+            {{this.$parent.$parent.$parent.language.publications}}
         </h1>
         <div class="text-center" v-if="errored">
-            <h3>We're sorry, we're not able to retrieve this information at the moment, please try back later</h3>
+            <h3>{{this.$parent.$parent.$parent.language.error}}</h3>
         </div>
         <div v-else>
             <div>
@@ -27,7 +27,7 @@
                         >
                             <v-list color="transparent"
                             >
-                                <v-subheader>Filter by year</v-subheader>
+                                <v-subheader>{{this.$parent.$parent.$parent.language.filter}}</v-subheader>
                                 <v-list-item-group
                                     v-model="selectedItem"
                                     color="primary"
@@ -91,28 +91,25 @@ export default {
         Publication
     },
     data: () => ({
-      selectedItem: null,
-      years: [],
-      cards: [],
-      loading: true,
-      errored: false
+        selectedItem: null,
+        years: [],
+        cards: [],
+        loading: true,
+        errored: false
     }),
     mounted() {
-        setTimeout(() => {
-            axios
-                .get(`${process.env.VUE_APP_API_URL}/publication/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
-                .then(res => {
-                    this.cards = res.data.data
-                    this.years = this.cards.map( c => c.year )
-                                    .filter((value, index, self) => self.indexOf(value) === index)
-                })
-                .catch(err => {
-                    console.error("axios err", err)
-                    this.errored = true
-                })
-                .finally(() => this.loading = false)
-
-        }, 2000)
+        axios
+            .get(`${process.env.VUE_APP_API_URL}/publication/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
+            .then(res => {
+                this.cards = res.data.data
+                this.years = this.cards.map( c => c.year )
+                                .filter((value, index, self) => self.indexOf(value) === index)
+            })
+            .catch(err => {
+                console.error("axios err", err)
+                this.errored = true
+            })
+            .finally(() => this.loading = false)
     },
     computed: {
         filterPublications: function(){

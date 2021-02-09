@@ -29,6 +29,6 @@
     name: 'Publication',
     props: ['card'],
     data: () => ({
-    }),
+    })
   }
 </script>

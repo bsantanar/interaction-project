@@ -1,10 +1,10 @@
 <template>
     <v-container style="max-width: 1200px;">
         <h1>
-            Activities
+            {{this.$parent.$parent.$parent.language.activities}}
         </h1>
         <div class="text-center" v-if="errored">
-            <h3>We're sorry, we're not able to retrieve this information at the moment, please try back later</h3>
+            <h3>{{this.$parent.$parent.$parent.language.error}}</h3>
         </div>
         <div v-else>
             <div>
@@ -27,7 +27,7 @@
                         >
                             <v-list color="transparent"
                             >
-                                <v-subheader>Filter by year</v-subheader>
+                                <v-subheader>{{this.$parent.$parent.$parent.language.filter}}</v-subheader>
                                 <v-list-item-group
                                     v-model="selectedItem"
                                     color="primary"
@@ -86,34 +86,31 @@ export default {
         Activity
     },
     data: () => ({
-      selectedItem: null,
-      years: [],
-      loading: true,
-      errored: false,
-      cards: []
+        selectedItem: null,
+        years: [],
+        loading: true,
+        errored: false,
+        cards: []
     }),
     mounted() {
-        setTimeout(() => {
-            axios
-                .get(`${process.env.VUE_APP_API_URL}/activity/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
-                .then(res => {
-                    this.cards = res.data.data
-                    this.years = this.cards.map( c => new Date(c.date).getFullYear() )
-                                    .filter((value, index, self) => self.indexOf(value) === index)
-                    this.cards = this.cards.map( r => {
-                        return {
-                            ...r,
-                            image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.error("axios err", err)
-                    this.errored = true
-                })
-                .finally(() => this.loading = false)
-
-        }, 2000)
+        axios
+            .get(`${process.env.VUE_APP_API_URL}/activity/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
+            .then(res => {
+                this.cards = res.data.data
+                this.years = this.cards.map( c => new Date(c.date).getFullYear() )
+                                .filter((value, index, self) => self.indexOf(value) === index)
+                this.cards = this.cards.map( r => {
+                    return {
+                        ...r,
+                        image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
+                    }
+                });
+            })
+            .catch(err => {
+                console.error("axios err", err)
+                this.errored = true
+            })
+            .finally(() => this.loading = false)
     },
     computed: {
         filterPublications: function(){

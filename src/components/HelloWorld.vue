@@ -16,7 +16,7 @@
                     class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                     style="height: 100%;"
                   >
-                    OpenGlove
+                    {{language.title}}
                   </div>
                 </v-expand-transition>
               </v-img>
@@ -30,15 +30,10 @@
           lg="8"
       >
         <div class="headline text-h4 font-weight-bold black--text mb-1 text-center">
-          Haptic device that provides vibrotactile feedback
+          {{language.subtitle}}
         </div>
         <div class="subtitle-1 text-subtitle-1 black--text text-center">
-          OpenGlove offers a flexible design, which allows developers and users to rearrange 
-          the placement of vibration motors in different areas of the hand depending on their 
-          particular needs. OpenGlove is a useful resource to enhance immersion in virtual reality 
-          and natural interfaces applications. In this site we provide the design and construction 
-          guidelines of the hardware. We also provide the basic software tools in order to help you 
-          in the construction of your own implementations of OpenGlove and software that uses this device.
+          {{language.description}}  
         </div>
       </v-col>
       <v-col
@@ -72,7 +67,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  Our mission is very important
+                  {{language.missionDescription}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -84,7 +79,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                Mission
+                {{language.mission}}
               </h3>
             </v-card-text>
           </v-card>
@@ -107,7 +102,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  Our objective is very important
+                  {{language.objectiveDescription}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -119,7 +114,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                Objective
+                {{language.objective}}
               </h3>
             </v-card-text>
           </v-card>
@@ -142,7 +137,7 @@
                   class="d-flex transition-fast-in-fast-out primary darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%;"
                 >
-                  Our purpose is very important
+                  {{language.purposeDescription}}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -154,7 +149,7 @@
                 For the perfect meal
               </div> -->
               <h3 class="display-1 font-weight-bold primary--text mb-2">
-                Purpose
+                {{language.purpose}}
               </h3>
             </v-card-text>
           </v-card>
@@ -197,24 +192,22 @@
 </template>
 
 <script>
-  export default {
-    name: 'HelloWorld',
+import info from "../assets/info.json";
+export default {
+  name: 'HelloWorld',
 
-    data: () => ({
-      items: [
-          {
-            src: require('../assets/guante-5.jpg'),
-          },
-          {
-            src: require('../assets/guante-7.jpg'),
-          },
-          {
-            src: require('../assets/guante-8.jpg'),
-          },
-      ],
-      
-    }),
+  data: () => ({
+    language: {},
+    items: []
+  }),
+  mounted() {
+    this.items = info.carousel.map(a => {
+      return {src: require(`../assets/${a}`)}
+    })
+    console.log(this.items)
+    this.language = this.$parent.$parent.$parent.$parent.language;
   }
+}
 </script>
 <style>
 .v-card--reveal {

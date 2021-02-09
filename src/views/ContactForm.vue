@@ -1,7 +1,7 @@
 <template>
     <v-container style="max-width: 1200px;">
         <h1>
-            Contact Us
+            {{this.$parent.$parent.$parent.language.contact}}
         </h1>
         <v-sheet
             elevation="1"

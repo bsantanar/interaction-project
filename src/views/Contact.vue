@@ -1,7 +1,7 @@
 <template>
     <v-container style="max-width: 1200px;">
         <h1>
-            Contact Us
+            {{this.$parent.$parent.$parent.language.contact}}
         </h1>
         <v-sheet
             elevation="1"
@@ -12,7 +12,7 @@
                     class="text-center">
                 <p>
 
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quae nulla, quod autem hic dolorem est sunt aliquid quas animi similique nesciunt, nobis quis officia numquam eveniet quasi fugit quam.
+                {{this.$parent.$parent.$parent.language.contactDescription}}
                 </p>
 
                 </v-col>
@@ -30,7 +30,7 @@
                     >
                         mdi-map-marker
                     </v-icon>
-                    <p>Universidad de Santiago de Chile</p>
+                    <p>{{info.location}}</p>
                 </v-col>
                 <v-col
                     cols="12"
@@ -44,7 +44,7 @@
                     >
                         mdi-phone
                     </v-icon>
-                    <p>+56 9 1234 56789</p>
+                    <p>{{info.phone}}</p>
                 </v-col>
                 <v-col
                     cols="12"
@@ -58,7 +58,7 @@
                     >
                         mdi-email
                     </v-icon>
-                    <p>neurone@usach.cl</p>
+                    <p>{{info.mail}}</p>
                 </v-col>
             </v-row>
         </v-sheet>
@@ -68,6 +68,7 @@
 export default {
 
     data: () => ({
+        info: require('../assets/info.json'),
     }),
 }
 </script>

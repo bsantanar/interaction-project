@@ -26,7 +26,8 @@ const routes = [
   {
     path: '/publications',
     name: 'Publications',
-    component: Publications
+    component: Publications,
+    props: true
   },
   {
     path: '/people',
