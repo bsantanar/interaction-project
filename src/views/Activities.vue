@@ -48,6 +48,34 @@
                                 </v-list-item-group>
                             </v-list>
                         </v-sheet>
+                        <v-sheet 
+                            class="mt-3"
+                                rounded="lg"
+                                elevation="1"
+                            >
+                                <v-list color="transparent"
+                                >
+                                    <v-subheader>{{this.$parent.$parent.$parent.language.filterCategory}}</v-subheader>
+                                    <v-list-item-group
+                                        v-model="selectedCategory"
+                                        color="primary"
+                                        class="text-center"
+                                        >
+                                        <v-list-item
+                                            v-for="(item, i) in categories"
+                                            :key="i"
+                                        >
+                                            <!-- <v-list-item-icon>
+                                            <v-icon v-text="item.icon"></v-icon>
+                                            </v-list-item-icon> -->
+
+                                            <v-list-item-content>
+                                            <v-list-item-title v-text="item.name"></v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list-item-group>
+                                </v-list>
+                            </v-sheet>
                     </v-col>
                     <v-col
                         cols="12"
@@ -62,11 +90,14 @@
                         </div>
                             <div v-else
                             >
-                                <Activity
+                            <div
                                 v-for="card in filterPublications"
-                                :key="card.headline"
+                                :key="card._id">
+                                <Activity
+                                v-if="showCard(card)"
                                 :card="card"
                                 />
+                            </div>
                             </div>
                     </v-col>
                 </v-row>
@@ -87,10 +118,12 @@ export default {
     },
     data: () => ({
         selectedItem: null,
+        selectedCategory: null,
         years: [],
         loading: true,
         errored: false,
-        cards: []
+        cards: [],
+        categories: []
     }),
     mounted() {
         axios
@@ -102,9 +135,15 @@ export default {
                 this.cards = this.cards.map( r => {
                     return {
                         ...r,
-                        image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
+                        image: r.image ? '' + Buffer.from(r.image) : undefined
                     }
-                });
+                })
+                this.cards.forEach( c => {
+                    if(!this.categories.find(
+                        cat => cat.name == c.category.name )){
+                        this.categories.push(c.category)
+                    }
+                })
             })
             .catch(err => {
                 console.error("axios err", err)
@@ -116,6 +155,21 @@ export default {
         filterPublications: function(){
             if(!this.years[this.selectedItem]) return this.cards
             return this.cards.filter(c => new Date(c.date).getFullYear() == this.years[this.selectedItem])
+        },
+        filterCategories: function(){
+            if(typeof this.selectedCategory === 'number') return [this.categories[this.selectedCategory]]
+            return true
+        }
+    },
+    methods: {
+        showCard(card) {
+            if(typeof this.selectedCategory === 'number'){
+                if(this.categories[this.selectedCategory]._id === card.category._id){
+                    return true
+                }
+                else return false
+            }
+            return true
         }
     }
 }

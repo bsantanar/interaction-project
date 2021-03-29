@@ -19,7 +19,14 @@
                     size="80"
                     color="secondary"
                 >
-                <v-img :src="resource.image"></v-img>
+                <v-img
+                v-if="resource.image"
+                :src="resource.image"
+                ></v-img>
+                <v-img
+                v-else
+                src="@/assets/default.jpg"
+                ></v-img>
                 </v-list-item-avatar>
             </v-list-item>
             <v-card-actions>
@@ -39,13 +46,5 @@
 export default {
     name: 'Resource',
     props: ['resource'],
-    computed: {
-        imageUrl(){
-            return 'data:image/jpeg;base64,' + btoa(
-                new Uint8Array(this.resource.image)
-                .reduce((data, byte) => data + String.fromCharCode(byte), '')
-            );
-        }
-    }
 }
 </script>

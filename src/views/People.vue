@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="text-center">
+      <h1>{{this.$parent.$parent.$parent.language.people}}</h1>
+    </div>
     <div class="text-center" v-if="errored">
         <h3>{{this.$parent.$parent.$parent.language.error}}</h3>
     </div>
@@ -15,13 +18,61 @@
           indeterminate
         ></v-progress-circular>
       </div>
-      <section v-else>
-        <HoneyComb 
-          v-for="person in people"
-          :key="person.name"
-          :person="person"
-        />
-      </section>
+      <div v-else>
+
+        <section>
+          <HoneyComb 
+            v-for="person in people"
+            :key="person.name"
+            :person="person"
+          />
+        </section>
+        <v-container style="max-width: 1200px;">
+          <v-row 
+          v-for="category in categories"
+          :key="category"
+          >
+            <v-col>
+              <h1>{{category}}</h1>
+            <v-list three-line elevation="2">
+              <v-subheader
+              >{{category}}</v-subheader>
+            <template v-for="(item, index) in people">
+
+              <v-divider 
+              v-if="category === item.category.name"
+              :key="index"></v-divider>
+              <v-list-item
+                v-if="category === item.category.name"
+                :key="item._id"
+              >
+                <v-list-item-avatar>
+                  <img alt :src="item.image" />
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title 
+                  v-html="item.fullName + ' - ' + 
+                  item.contributionDate.substr(0, 10)">
+
+                  </v-list-item-title>
+                  <v-list-item-subtitle 
+                  v-html="item.degree + '. ' + 
+                  item.description + '. ' +
+                  'Contact: ' +
+                  item.email + '. ' +
+                  `${item.link ? `${item.link}. ` : ''}`"
+                  >
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+            </v-list>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+      
     </div>
   </div>
   
@@ -45,9 +96,14 @@ export default {
             this.people = this.people.map( r => {
                   return {
                       ...r,
-                      image: r.image ? 'data:image/jpeg;base64,' + Buffer.from(r.image) : 'null'
+                      image: r.image ? Buffer.from(r.image) : 'null'
                   }
-              });
+            })
+            this.people.forEach( c => {
+                if(this.categories.indexOf(c.category.name) === -1){
+                    this.categories.push(c.category.name)
+                }
+            })
           })
           .catch(err => {
               console.error("axios err", err)
@@ -59,7 +115,9 @@ export default {
       root: null,
       loading: true,
       errored: false,
-      people: []
+      hidden: true,
+      people: [],
+      categories: []
     }),
 
 }

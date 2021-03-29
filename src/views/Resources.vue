@@ -69,7 +69,7 @@ export default {
                 this.resources = this.resources.map( r => {
                     return {
                         ...r,
-                        image: 'data:image/jpeg;base64,' + Buffer.from(r.image)
+                        image: r.image? '' + Buffer.from(r.image) : undefined
                     }
                 });
             })

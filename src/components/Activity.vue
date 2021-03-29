@@ -3,7 +3,13 @@
     class="mx-auto mb-2"
   >
     <v-img
+      v-if="card.image"
       :src="card.image"
+      height="200px"
+    ></v-img>
+    <v-img
+      v-else
+      src="@/assets/default.jpg"
       height="200px"
     ></v-img>
 
@@ -37,7 +43,7 @@
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>
-        <div v-if="card.link" class="text-center">
+        <div v-if="card.link && validURL" class="text-center">
 
           <iframe width="80%" height="350px" :src="card.link" frameborder="0" allowtransparency="true" allowfullscreen allow="encrypted-media"></iframe>
 
@@ -50,6 +56,8 @@
   </v-card>
 </template>
 <script>
+
+
 export default {
     name: 'Activity',
     props: ['card'],
@@ -69,6 +77,17 @@ export default {
               day = '0' + day;
 
           return [year, month, day].join('-');
+      }
+    },
+    computed: {
+      validURL: function() {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(this.card.link);
       }
     }
 }
