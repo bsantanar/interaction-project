@@ -40,10 +40,10 @@
             <template v-for="(item, index) in people">
 
               <v-divider 
-              v-if="category === item.category.name"
+              v-if="item.category.some(c => c.name == category)"
               :key="index"></v-divider>
               <v-list-item
-                v-if="category === item.category.name"
+                v-if="item.category.some(c => c.name == category)"
                 :key="item._id"
               >
                 <v-list-item-avatar>
@@ -99,11 +99,10 @@ export default {
                       image: r.image ? Buffer.from(r.image) : 'null'
                   }
             })
-            this.people.forEach( c => {
-                if(this.categories.indexOf(c.category.name) === -1){
-                    this.categories.push(c.category.name)
-                }
-            })
+                this.categories = this.people.flatMap(p => p.category)
+                            .filter((v, i, a) => 
+                            a.findIndex(t =>  t._id === v._id) === i)
+                            .map( p => p.name)
           })
           .catch(err => {
               console.error("axios err", err)
