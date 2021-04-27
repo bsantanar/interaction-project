@@ -35,6 +35,7 @@
                         rounded
                         text
                         :href="resource.url"
+                        target="_blank"
                     >
                     Link
                     </v-btn>

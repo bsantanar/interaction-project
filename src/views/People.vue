@@ -27,49 +27,92 @@
             :person="person"
           />
         </section>
-        <v-container style="max-width: 1200px;">
-          <v-row 
-          v-for="category in categories"
-          :key="category"
-          >
-            <v-col>
-              <h1>{{category}}</h1>
-            <v-list three-line elevation="2">
-              <v-subheader
-              >{{category}}</v-subheader>
-            <template v-for="(item, index) in people">
-
-              <v-divider 
-              v-if="item.category.some(c => c.name == category)"
-              :key="index"></v-divider>
-              <v-list-item
-                v-if="item.category.some(c => c.name == category)"
-                :key="item._id"
+        <v-container style="max-width: 1200px;" class="mb-5">
+          <v-row>
+            <v-col
+                cols="12"
+                sm="4"
+                md="2"
+                class="mt-15"
+            >
+              <v-sheet
+                  rounded="lg"
+                  elevation="1"
               >
-                <v-list-item-avatar>
-                  <img alt :src="item.image" />
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                  <v-list-item-title 
-                  v-html="item.fullName + ' - ' + 
-                  item.contributionDate.substr(0, 10)">
-
-                  </v-list-item-title>
-                  <v-list-item-subtitle 
-                  v-html="item.degree + '. ' + 
-                  item.description + '. ' +
-                  'Contact: ' +
-                  item.email + '. ' +
-                  `${item.link ? `${item.link}. ` : ''}`"
+                <v-list color="transparent"
+                >
+                  <v-subheader>{{this.$parent.$parent.$parent.language.filter}}</v-subheader>
+                  <v-list-item-group
+                    v-model="selectedItem"
+                    color="primary"
+                    class="text-center"
+                    >
+                    <v-list-item
+                        v-for="(item, i) in years"
+                        :key="i"
+                    >
+                      <v-list-item-content>
+                      <v-list-item-title v-text="item"></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-sheet>
+              <v-sheet 
+                  class="mt-3"
+                      rounded="lg"
+                      elevation="1"
                   >
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-            </v-list>
+                    <v-list color="transparent"
+                    >
+                      <v-subheader>{{this.$parent.$parent.$parent.language.filterCategory}}</v-subheader>
+                      <v-list-item-group
+                        v-model="selectedCategory"
+                        color="primary"
+                        class="text-center"
+                        >
+                        <v-list-item
+                            v-for="(item, i) in categories"
+                            :key="i"
+                        >
+                          <v-list-item-content>
+                          <v-list-item-title v-text="item"></v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list-item-group>
+                    </v-list>
+                </v-sheet>
             </v-col>
-          </v-row>
+            <v-col
+                cols="12"
+                md="10"
+                sm="8"
+            >
+              <div
+                v-for="category in filterCategories"
+                :key="category"
+              >
+
+                <v-row class="mt-3"
+                  v-if="filterMembers
+                          .find(p => 
+                          p.category
+                          .some(c => c.name == category))"
+                >
+                  <h1>{{category}}</h1>
+                </v-row>
+                <v-row>
+                  <template v-for="(item, index) in filterMembers">
+                    <Member 
+                      :key="index"
+                      v-if="item.category.some(c => c.name == category)"
+                      :item="item"
+                    />
+                  </template>
+                </v-row>
+              </div>
+            </v-col>
+            </v-row>
         </v-container>
       </div>
       
@@ -79,36 +122,14 @@
 </template>
 <script>
 import HoneyComb from "../components/HoneyComb.vue";
+import Member from "../components/Member.vue"
 import axios from 'axios'
 
 export default {
     name: "People",
     components: {
-      HoneyComb
-    },
-    // updated: function () {
-    // },
-    mounted() {
-      axios
-          .get(`${process.env.VUE_APP_API_URL}/member/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
-          .then(res => {
-            this.people = res.data.data
-            this.people = this.people.map( r => {
-                  return {
-                      ...r,
-                      image: r.image ? '' + Buffer.from(r.image) : undefined
-                  }
-            })
-                this.categories = this.people.flatMap(p => p.category)
-                            .filter((v, i, a) => 
-                            a.findIndex(t =>  t._id === v._id) === i)
-                            .map( p => p.name)
-          })
-          .catch(err => {
-              console.error("axios err", err)
-              this.errored = true
-          })
-          .finally(() => this.loading = false)
+      HoneyComb,
+      Member
     },
     data: () => ({
       root: null,
@@ -116,8 +137,70 @@ export default {
       errored: false,
       hidden: true,
       people: [],
-      categories: []
+      categories: [],
+      years: [],
+      projects: [],
+      selectedItem: null,
+      selectedProject: null,
+      selectedCategory: null
     }),
+    mounted() {
+      axios
+          .get(`${process.env.VUE_APP_API_URL}/member/?projectsIds=${process.env.VUE_APP_PROJECT_ID}`)
+          .then(res => {
+            this.people = res.data.data
+            this.people = this.people.map( r => {
+                  return {
+                    ...r,
+                    image: r.image ? '' + Buffer.from(r.image) : undefined,
+                    contributionDate: Date.parse(r.contributionDate)
+                  }
+            }).sort((a, b) => b.contributionDate - a.contributionDate)
+              .map(p => {
+                return {
+                  ...p,
+                  contributionDate: new Date(p.contributionDate).toISOString()
+                }
+
+              })
+            this.categories = this.people.flatMap(p => p.category)
+                        .filter((v, i, a) => 
+                        a.findIndex(t =>  t._id === v._id) === i)
+                        .sort((a, b) => a.priority - b.priority)
+                        .map( p => p.name)
+            this.projects = this.people.flatMap(c => c.projectsIds)
+                        .filter((v, i, a) => 
+                        a.findIndex(t =>  t._id === v._id) === i)
+            this.years = this.people
+                          .map(p => new Date(p.contributionDate)
+                          .getFullYear())
+                          .filter((v, i, a) => a.indexOf(v) === i)
+          })
+          .catch(err => {
+              console.error("axios err", err)
+              this.errored = true
+          })
+          .finally(() => this.loading = false)
+    },
+    computed: {
+      filterMembers: function(){
+          if(!this.years[this.selectedItem] && !this.projects[this.selectedProject]) return this.people
+          let newCards = []
+          if(typeof this.selectedProject === 'number') {
+              let project = this.projects[this.selectedProject]
+              newCards = this.people.filter(c => 
+                      c.projectsIds.some(p => p._id === project._id))
+          } else newCards = this.people
+          if(typeof this.selectedItem === 'number') {
+              newCards = newCards.filter(c => new Date(c.contributionDate).getFullYear() == this.years[this.selectedItem])
+          }
+          return newCards
+      },
+      filterCategories: function(){
+          if(typeof this.selectedCategory === 'number') return [this.categories[this.selectedCategory]]
+          return this.categories
+      }
+    }
 
 }
 </script>
@@ -132,16 +215,16 @@ export default {
 	--size: calc(calc(90vw / var(--Nhexa)) - var(--gap));
 }
 @media only screen and (min-width: 1100px) {
-  :root {--Nhexa: 6;}
-  section {margin: calc(var(--size) * .6) calc(var(--size) * .75) 0;}
+  :root {--Nhexa: 14;}
+  section {margin: calc(var(--size) * .6) calc(var(--size) * 2.7) 0;}
 }
 @media only screen and (max-width: 1100px) {
-	:root {--Nhexa: 4;}
-  section {margin: calc(var(--size) * .6) calc(var(--size) * .55) 0;}
+	:root {--Nhexa: 10;}
+  section {margin: calc(var(--size) * .6) calc(var(--size) * 1.8) 0;}
 }
 @media only screen and (max-width: 600px) {
-	:root {--Nhexa: 2;}
-  section {margin: calc(var(--size) * .6) calc(var(--size) * .15) 0;}
+	:root {--Nhexa: 8;}
+  section {margin: calc(var(--size) * .6) calc(var(--size) * 1.4) 0;}
 }
 html {
 	background: #e9e9e7;

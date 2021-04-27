@@ -12,7 +12,7 @@
                     <v-col
                         cols="12"
                         sm="12"
-                        lg="2"
+                        md="2"
                     >
                         <div v-if="loading">
                             <v-skeleton-loader
@@ -82,7 +82,7 @@
                     </v-col>
                     <v-col
                         cols="12"
-                        lg="10"
+                        md="10"
                         sm="12"
                     >
                         <div v-if="loading">
@@ -114,10 +114,8 @@
                             :card="card"
                             class="ma-5">
                                 <li v-if="card.category.some(c => c.name == category.name)">
-                                    {{card.author}}({{card.year}})
-                                    .{{card.title}}.{{card.description}}
-                                    {{card.editorial ? `[${card.editorial}]` : ''}}
-                                    <a v-if="card.doi" :href="card.doi">DOI</a>
+                                    {{card.author + ' '}}({{card.year}}). {{card.title}}. {{card.description}}. {{card.editorial ? `[${card.editorial}]` : ''}}
+                                    <a v-if="card.doi" :href="card.doi" target="_blank">DOI</a>
                                 </li>
                             </ul>
                         </div>
@@ -142,21 +140,28 @@ export default {
     data: () => ({
         selectedItem: null,
         selectedCategory: null,
+        selectedProject: null,
         years: [],
         cards: [],
         categories: [],
+        projects: [],
         loading: true,
         errored: false
     }),
     mounted() {
         axios
-            .get(`${process.env.VUE_APP_API_URL}/publication/`)
+            .get(`${process.env.VUE_APP_API_URL}/publication/?projectId=${process.env.VUE_APP_PROJECT_ID}`)
             .then(res => {
                 this.cards = res.data.data
+                                .sort((a, b) => b.year - a.year)
                 this.years = this.cards.map( c => c.year )
                                 .filter((value, index, self) => self.indexOf(value) === index)
                                 .sort((a, b) => a - b)
                 this.categories = this.cards.flatMap(c => c.category)
+                            .filter((v, i, a) => 
+                            a.findIndex(t =>  t._id === v._id) === i)
+                            .sort((a, b) => a.priority - b.priority)
+                this.projects = this.cards.flatMap(c => c.projectId)
                             .filter((v, i, a) => 
                             a.findIndex(t =>  t._id === v._id) === i)
             })
@@ -168,8 +173,17 @@ export default {
     },
     computed: {
         filterPublications: function(){
-            if(!this.years[this.selectedItem]) return this.cards
-            return this.cards.filter(c => c.year == this.years[this.selectedItem])
+            if(!this.years[this.selectedItem] && !this.projects[this.selectedProject]) return this.cards
+            let newCards = []
+            if(typeof this.selectedProject === 'number') {
+                let project = this.projects[this.selectedProject]
+                newCards = this.cards.filter(c => 
+                        c.projectId.some(p => p._id === project._id))
+            } else newCards = this.cards
+            if(typeof this.selectedItem === 'number') {
+                newCards = newCards.filter(c => c.year == this.years[this.selectedItem])
+            }
+            return newCards
         },
         filterCategories: function(){
             if(typeof this.selectedCategory === 'number') return [this.categories[this.selectedCategory]]
