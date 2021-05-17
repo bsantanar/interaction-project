@@ -1,12 +1,23 @@
 <template>
-    <article :style="background">
-		<!-- <figure v-if="!person.image">
-		<h2>{{person.fullName}}</h2>
-			<p>{{person.degree}}</p>
-		</figure> -->
-		<img v-if="person.image" alt :src="person.image" :style="img" />
-		<img v-else alt src="@/assets/default.jpg" :style="img" />
-	</article>
+
+		<article :style="background">
+			<!-- <figure v-if="!person.image">
+			<h2>{{person.fullName}}</h2>
+				<p>{{person.degree}}</p>
+			</figure> -->
+    <v-tooltip v-if="person.image" bottom open-delay="400">
+      <template v-slot:activator="{ on, attrs }">
+			<img v-bind="attrs" v-on="on" alt :src="person.image" :style="img" />
+      </template>
+      <span>{{person.fullName}}</span>
+    </v-tooltip>
+    <v-tooltip v-else bottom open-delay="400">
+      <template v-slot:activator="{ on, attrs }">
+			<img v-bind="attrs" v-on="on" alt src="@/assets/default.jpg" :style="img" />
+      </template>
+      <span>{{person.fullName}}</span>
+    </v-tooltip>
+		</article>
 </template>
 <script>
 export default {
@@ -102,5 +113,31 @@ body > p {
 	font-size: 1.5rem;
 	margin: 2rem 0 1rem calc(var(--size) * .5);
 	font-weight: 200;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 </style>
