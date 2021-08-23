@@ -157,7 +157,9 @@ export default {
     methods: {
         showCard(card) {
             if(typeof this.selectedCategory === 'number'){
-                if(this.categories[this.selectedCategory]._id === card.category._id){
+                let categoryId = this.categories[this.selectedCategory]._id
+                console.log(card.category.some(c => c._id == categoryId), categoryId)
+                if(card.category.some(c => c._id == categoryId)){
                     return true
                 }
                 else return false
